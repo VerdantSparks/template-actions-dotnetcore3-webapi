@@ -1,0 +1,32 @@
+name: ASP.NET Core Action For Pull Requests 
+
+on:
+  pull_request:
+    branches-ignore:
+      - 'releases/**'
+
+    paths-ignore:
+      - 'README*'
+      - 'docs/**'
+      - '.github/workflows/**'
+
+jobs:
+  publish-and-test-coverage:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 3.0.100
+
+    - name: Publish
+      run: dotnet publish -c Release
+
+    - name: Test with coverage
+      working-directory: ./tests
+      run: dotnet test /p:CollectCoverage=true

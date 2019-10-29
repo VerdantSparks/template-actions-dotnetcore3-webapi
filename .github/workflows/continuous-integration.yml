@@ -1,0 +1,32 @@
+name: ASP.NET Core CI
+
+on: 
+  push:
+    branches-ignore:
+      - 'master'
+      - 'releases/**'
+
+    paths-ignore:
+      - 'README*'
+      - 'docs/**'
+      - '.github/workflows/**'
+
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 3.0.100
+
+    - name: Build
+      run: dotnet build
+      
+    - name: Test
+      run: dotnet test
